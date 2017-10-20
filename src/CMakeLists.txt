@@ -152,10 +152,23 @@ list(APPEND DRISHTI_SDK_3RDPARTY_PKG_LIBS xgboost::xgboost) # Add library
 option(DRISHTI_BUILD_OGLES_GPGPU "Build with OGLES_GPGPU" ON)
 
 if(DRISHTI_BUILD_OGLES_GPGPU)
-  hunter_add_package(ogles_gpgpu)
-  find_package(ogles_gpgpu CONFIG REQUIRED)
-  list(APPEND DRISHTI_SDK_3RDPARTY_PKG_LIBS ogles_gpgpu::ogles_gpgpu) # Add library
+
+  # Support local submodule use or external package:
+  option(DRISHTI_USE_LOCAL_OGLES_GPGPU "Use local ogles_gpgpu" ON)
+
+  if(DRISHTI_USE_LOCAL_OGLES_GPGPU)
+    option(OGLES_GPGPU_INSTALL "Avoid installation of submodule libraries" ON)
+    option(OGLES_GPGPU_BUILD_EXAMPLES "Don't build examples" OFF)
+    option(OGLES_GPGPU_VERBOSE "Don't be verbose" OFF)
+    add_subdirectory( "${DRISHTI_3RD_PARTY_DIR}/ogles_gpgpu" )
+    set(OGLES_GPGPU_LIB ogles_gpgpu)
+    add_library(ogles_gpgpu::ogles_gpgpu ALIAS ogles_gpgpu)
+  else()
+    hunter_add_package(ogles_gpgpu)
+    find_package(ogles_gpgpu CONFIG REQUIRED)
+  endif()
   set(OGLES_GPGPU_LIB ogles_gpgpu::ogles_gpgpu)
+
 endif()
 
 ##################

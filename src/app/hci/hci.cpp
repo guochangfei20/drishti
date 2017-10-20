@@ -13,8 +13,8 @@
 #include "drishti/core/Semaphore.h"
 #include "drishti/hci/FaceFinderPainter.h"
 #include "drishti/testlib/drishti_cli.h"
-#include "drishti/graphics/swizzle.h" // ogles_gpgpu...
 #include "drishti/face/FaceDetectorFactoryJson.h"
+#include "ogles_gpgpu/common/proc/swizzle.h"
 
 #include "videoio/VideoSourceCV.h"
 #include "videoio/VideoSinkCV.h"
@@ -174,6 +174,9 @@ int gauze_main(int argc, char** argv)
 
     // NOTE: We can create the OpenGL context prior to AVFoundation use as a workaround
     auto opengl = aglet::GLContext::create(aglet::GLContext::kAuto, doWindow ? "hci" : "", 640, 480);
+#if defined(_WIN32) || defined(_WIN64)
+	int code = glewInit();
+#endif
 
     auto video = drishti::videoio::VideoSourceCV::create(sInput);
     video->setOutputFormat(drishti::videoio::VideoSourceCV::ARGB); // be explicit, fail on error
