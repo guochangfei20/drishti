@@ -18,7 +18,6 @@ set(drishti_upload_init "${CMAKE_CURRENT_LIST_DIR}/drishti-upload/init.cmake")
 
 if(EXISTS "${drishti_upload_init}" AND DRISHTI_USE_DRISHTI_UPLOAD)
   # CI: Locked CI build configuration
-  include("cmake/HunterGate.cmake") # HUNTER_ENABLED
   include("${drishti_upload_init}")
 else()
   set(DRISHTI_HUNTER_GATE_URL "https://github.com/ruslo/hunter/archive/v0.19.237.tar.gz")
@@ -26,6 +25,7 @@ else()
   if(HUNTER_ENABLED)
     # DEPENDENCY: if(HUNTER_ENABLE): we are being used as a dependency from
     # another project and we will use the config.cmake from the parent project.
+    include("cmake/HunterGate.cmake") # HUNTER_ENABLED
     HunterGate(
       URL "${DRISHTI_HUNTER_GATE_URL}"
       SHA1 "${DRISHTI_HUNTER_GATE_SHA1}"
