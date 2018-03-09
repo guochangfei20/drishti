@@ -34,6 +34,7 @@ else()
     # LOCAL: This is a local repository build and we are relying on a local
     # config (instead of CI friendly drishti-upload) that is closer to the 
     # current default versions in ${HUNTER_ROOT}/cmake/configs/default.cmake
+    include("cmake/default_options.cmake")
     include("cmake/HunterGate.cmake") # HUNTER_ENABLED
     HunterGate(
       URL "${DRISHTI_HUNTER_GATE_URL}"
